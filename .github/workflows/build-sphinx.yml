@@ -50,10 +50,11 @@ jobs:
           pip install setuptools==66 --upgrade
           pip install build
 
-      - name: Install PrimAITE for docs autosummary
+      - name: Install PrimAITE & Pandoc for docs autosummary
         run: |
           set -x
           python -m pip install -e .[dev,rl]
+          sudo apt-get install pandoc
 
       - name: Run build script for Sphinx pages
         env:
