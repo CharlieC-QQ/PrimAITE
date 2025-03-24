@@ -1,0 +1,1398 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="UC7 with Attack Variability" href="UC7-attack-variants.html" /><link rel="prev" title="TAP003 - Malicious Insider Kill Chain" href="UC7-TAP003-Kill-Chain-E2E.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>Training an Agent on UC7 - PrimAITE v4.0.0 docs</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PrimAITE v4.0.0
+ docs</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PrimAITE v4.0.0
+ docs</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">About PrimAITE:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About PrimAITE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dependencies.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How To</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to.html">How-To Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/custom_actions.html">Creating Custom Actions in PrimAITE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/custom_environments.html">Creating Custom Environments for PrimAITE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/custom_rewards.html">Creating Custom Rewards in PrimAITE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/custom_software.html">Creating Custom Software for PrimAITE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/using_dev_cli.html">Utilising the PrimAITE dev-mode cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/extensible_actions.html">Extensible Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/extensible_agents.html">Extensible Agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/extensible_nodes.html">Extensible Nodes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/extensible_rewards.html">Extensible Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_to_guides/primaite_yaml_migration_guide.html">PrimAITE 4.0.0 YAML Configuration Migration Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../game_layer.html">PrimAITE Game layer</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../simulation.html">Simulation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Simulation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_structure.html">Simulation Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_structure.html#actions">Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/base_hardware.html">Base Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/network_interfaces.html">Network Interface Hierarchy Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/transport_to_data_link_layer.html">Transport Layer to Data Link Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/nodes/host_node.html">Host Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/nodes/network_node.html">Network Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/nodes/router.html">Router</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/nodes/switch.html">Switch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/nodes/wireless_router.html">Wireless Router</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/nodes/firewall.html">Firewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/network.html">Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/network/airspace.html">AirSpace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/system/internal_frame_processing.html">Internal Frame Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/system/sys_log.html">SysLog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/system/pcap.html">PCAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation_components/system/session_and_software_manager.html">Session and Software Manager</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../simulation_components/system/software.html">Software</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Software</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/applications/c2_suite.html">Command and Control Application Suite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/applications/data_manipulation_bot.html">DataManipulationBot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/applications/database_client.html">DatabaseClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/applications/dos_bot.html">dos-bot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/applications/nmap.html">NMAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/applications/ransomware_script.html">RansomwareScript</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/applications/web_browser.html">WebBrowser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/database_service.html">DatabaseService</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/dns_client.html">DNSClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/dns_server.html">DNSServer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/ftp_client.html">FTPClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/ftp_server.html">FTPServer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/ntp_client.html">NTPClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/ntp_server.html">NTPServer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/terminal.html">Terminal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulation_components/system/services/web_server.html">WebServer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../config.html">PrimAITE 4.0.0 Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PrimAITE 4.0.0 Configuration</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/io_settings.html"><code class="docutils literal notranslate"><span class="pre">io_settings</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/game.html"><code class="docutils literal notranslate"><span class="pre">game</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/agents.html"><code class="docutils literal notranslate"><span class="pre">agents</span></code></a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configuration/simulation.html"><code class="docutils literal notranslate"><span class="pre">simulation</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of simulation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration/simulation/nodes/computer.html"><code class="docutils literal notranslate"><span class="pre">computer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration/simulation/nodes/firewall.html"><code class="docutils literal notranslate"><span class="pre">firewall</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration/simulation/nodes/router.html"><code class="docutils literal notranslate"><span class="pre">router</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration/simulation/nodes/server.html"><code class="docutils literal notranslate"><span class="pre">server</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration/simulation/nodes/switch.html"><code class="docutils literal notranslate"><span class="pre">switch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration/simulation/nodes/network_examples.html"><code class="docutils literal notranslate"><span class="pre">Network</span> <span class="pre">Examples</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../varying_config_files.html">Defining variations in the config files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../environment.html">RL Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../action_masking.html">Action Masking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../node_sets.html">Network Node Adder Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../example_notebooks.html">Example Jupyter Notebooks</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../executed_notebooks.html">Executed Jupyter Notebooks</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Executed Jupyter Notebooks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Action-masking.html">Action Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Command-and-Control-E2E-Demonstration.html">Command and Control Application Suite E2E Demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Data-Manipulation-Customising-Red-Agent.html">Customising UC2 Red Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Data-Manipulation-E2E-Demonstration.html">Data Manipulation Scenario</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Getting-Information-Out-Of-PrimAITE.html">Getting information out of PrimAITE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="How-To-Use-Primaite-Dev-Mode.html">PrimAITE Developer mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Privilege-Escalation-and-Data-Loss-Example.html">Simulating Privilege Escalation and Data Loss Using SSH and ACLs Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Requests-and-Responses.html">Requests and Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Terminal-Processing.html">Terminal Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Training-an-RLLIB-MARL-System.html">Train a Multi agent system using RLLIB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Training-an-RLLib-Agent.html">Train a Single agent system using RLLib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Training-an-SB3-Agent.html">Training an SB3 Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UC7-E2E-Demo.html">Use Case 7 Scenario Demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UC7-TAP001-Kill-Chain-E2E.html">TAP001 - Mobile Malware Kill Chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UC7-TAP003-Kill-Chain-E2E.html">TAP003 - Malicious Insider Kill Chain</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Training an Agent on UC7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UC7-attack-variants.html">UC7 with Attack Variability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UC7-network_connectivity.html">UC7 Network Connectivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Using-Episode-Schedules.html">Using Episode Schedules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create-simulation_demo.html">Build a simulation using the Python API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi-processing.html">Simple multi-processing demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network_simulator_demo.html">PrimAITE Router Simulation Demo</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../state_system.html">Simulation State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../request_system.html">Request System</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../_autosummary/primaite.html">PrimAITE API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of PrimAITE API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/primaite.getLogger.html">primaite.getLogger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.cli.html">primaite.cli</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of primaite.cli</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.cli.build_dirs.html">primaite.cli.build_dirs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.cli.log_level.html">primaite.cli.log_level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.cli.logs.html">primaite.cli.logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.cli.reset_notebooks.html">primaite.cli.reset_notebooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.cli.setup.html">primaite.cli.setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.cli.version.html">primaite.cli.version</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.config.html">primaite.config</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of primaite.config</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.config.load.html">primaite.config.load</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of primaite.config.load</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.config.load.data_manipulation_config_path.html">primaite.config.load.data_manipulation_config_path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.config.load.data_manipulation_marl_config_path.html">primaite.config.load.data_manipulation_marl_config_path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.config.load.get_extended_config_path.html">primaite.config.load.get_extended_config_path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.config.load.load.html">primaite.config.load.load</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.exceptions.html">primaite.exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of primaite.exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.exceptions.NetworkError.html">primaite.exceptions.NetworkError</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.exceptions.PrimaiteError.html">primaite.exceptions.PrimaiteError</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.html">primaite.game</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of primaite.game</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.html">primaite.game.agent</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of primaite.game.agent</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.html">primaite.game.agent.actions</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.abstract.html">primaite.game.agent.actions.abstract</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.abstract</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.abstract.AbstractAction.html">primaite.game.agent.actions.abstract.AbstractAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.acl.html">primaite.game.agent.actions.acl</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.acl</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.acl.ACLAddRuleAbstractAction.html">primaite.game.agent.actions.acl.ACLAddRuleAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.acl.ACLRemoveRuleAbstractAction.html">primaite.game.agent.actions.acl.ACLRemoveRuleAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.acl.FirewallACLAddRuleAction.html">primaite.game.agent.actions.acl.FirewallACLAddRuleAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.acl.FirewallACLRemoveRuleAction.html">primaite.game.agent.actions.acl.FirewallACLRemoveRuleAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.acl.RouterACLAddRuleAction.html">primaite.game.agent.actions.acl.RouterACLAddRuleAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.acl.RouterACLRemoveRuleAction.html">primaite.game.agent.actions.acl.RouterACLRemoveRuleAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.application.html">primaite.game.agent.actions.application</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.application</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.application.NodeApplicationAbstractAction.html">primaite.game.agent.actions.application.NodeApplicationAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.application.NodeApplicationCloseAction.html">primaite.game.agent.actions.application.NodeApplicationCloseAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.application.NodeApplicationExecuteAction.html">primaite.game.agent.actions.application.NodeApplicationExecuteAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.application.NodeApplicationFixAction.html">primaite.game.agent.actions.application.NodeApplicationFixAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.application.NodeApplicationInstallAction.html">primaite.game.agent.actions.application.NodeApplicationInstallAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.application.NodeApplicationRemoveAction.html">primaite.game.agent.actions.application.NodeApplicationRemoveAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.application.NodeApplicationScanAction.html">primaite.game.agent.actions.application.NodeApplicationScanAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.html">primaite.game.agent.actions.file</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.file</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileAbstractAction.html">primaite.game.agent.actions.file.NodeFileAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileAccessAction.html">primaite.game.agent.actions.file.NodeFileAccessAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileCheckhashAction.html">primaite.game.agent.actions.file.NodeFileCheckhashAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileCorruptAction.html">primaite.game.agent.actions.file.NodeFileCorruptAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileCreateAction.html">primaite.game.agent.actions.file.NodeFileCreateAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileDeleteAction.html">primaite.game.agent.actions.file.NodeFileDeleteAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileRepairAction.html">primaite.game.agent.actions.file.NodeFileRepairAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileRestoreAction.html">primaite.game.agent.actions.file.NodeFileRestoreAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.file.NodeFileScanAction.html">primaite.game.agent.actions.file.NodeFileScanAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.folder.html">primaite.game.agent.actions.folder</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.folder</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.folder.NodeFolderAbstractAction.html">primaite.game.agent.actions.folder.NodeFolderAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.folder.NodeFolderCheckhashAction.html">primaite.game.agent.actions.folder.NodeFolderCheckhashAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.folder.NodeFolderCreateAction.html">primaite.game.agent.actions.folder.NodeFolderCreateAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.folder.NodeFolderRepairAction.html">primaite.game.agent.actions.folder.NodeFolderRepairAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.folder.NodeFolderRestoreAction.html">primaite.game.agent.actions.folder.NodeFolderRestoreAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.folder.NodeFolderScanAction.html">primaite.game.agent.actions.folder.NodeFolderScanAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.host_nic.html">primaite.game.agent.actions.host_nic</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.host_nic</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.host_nic.HostNICAbstractAction.html">primaite.game.agent.actions.host_nic.HostNICAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.host_nic.HostNICDisableAction.html">primaite.game.agent.actions.host_nic.HostNICDisableAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.host_nic.HostNICEnableAction.html">primaite.game.agent.actions.host_nic.HostNICEnableAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.manager.html">primaite.game.agent.actions.manager</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.manager</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.manager.ActionManager.html">primaite.game.agent.actions.manager.ActionManager</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.manager.DoNothingAction.html">primaite.game.agent.actions.manager.DoNothingAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.network.html">primaite.game.agent.actions.network</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.network</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.network.NetworkPortAbstractAction.html">primaite.game.agent.actions.network.NetworkPortAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.network.NetworkPortDisableAction.html">primaite.game.agent.actions.network.NetworkPortDisableAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.network.NetworkPortEnableAction.html">primaite.game.agent.actions.network.NetworkPortEnableAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.html">primaite.game.agent.actions.node</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.node</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeAbstractAction.html">primaite.game.agent.actions.node.NodeAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeAccountsAddUserAction.html">primaite.game.agent.actions.node.NodeAccountsAddUserAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeAccountsDisableUserAction.html">primaite.game.agent.actions.node.NodeAccountsDisableUserAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeNMAPAbstractAction.html">primaite.game.agent.actions.node.NodeNMAPAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeNMAPPingScanAction.html">primaite.game.agent.actions.node.NodeNMAPPingScanAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeNMAPPortScanAction.html">primaite.game.agent.actions.node.NodeNMAPPortScanAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeNetworkServiceReconAction.html">primaite.game.agent.actions.node.NodeNetworkServiceReconAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeOSScanAction.html">primaite.game.agent.actions.node.NodeOSScanAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeResetAction.html">primaite.game.agent.actions.node.NodeResetAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeSendLocalCommandAction.html">primaite.game.agent.actions.node.NodeSendLocalCommandAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeShutdownAction.html">primaite.game.agent.actions.node.NodeShutdownAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.node.NodeStartupAction.html">primaite.game.agent.actions.node.NodeStartupAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.html">primaite.game.agent.actions.service</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.service</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceAbstractAction.html">primaite.game.agent.actions.service.NodeServiceAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceDisableAction.html">primaite.game.agent.actions.service.NodeServiceDisableAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceEnableAction.html">primaite.game.agent.actions.service.NodeServiceEnableAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceFixAction.html">primaite.game.agent.actions.service.NodeServiceFixAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServicePauseAction.html">primaite.game.agent.actions.service.NodeServicePauseAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceRestartAction.html">primaite.game.agent.actions.service.NodeServiceRestartAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceResumeAction.html">primaite.game.agent.actions.service.NodeServiceResumeAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceScanAction.html">primaite.game.agent.actions.service.NodeServiceScanAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceStartAction.html">primaite.game.agent.actions.service.NodeServiceStartAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.service.NodeServiceStopAction.html">primaite.game.agent.actions.service.NodeServiceStopAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.session.html">primaite.game.agent.actions.session</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.session</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.session.NodeAccountChangePasswordAction.html">primaite.game.agent.actions.session.NodeAccountChangePasswordAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.session.NodeSessionAbstractAction.html">primaite.game.agent.actions.session.NodeSessionAbstractAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.session.NodeSessionsRemoteLoginAction.html">primaite.game.agent.actions.session.NodeSessionsRemoteLoginAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.session.NodeSessionsRemoteLogoutAction.html">primaite.game.agent.actions.session.NodeSessionsRemoteLogoutAction</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.html">primaite.game.agent.actions.software</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of primaite.game.agent.actions.software</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.ConfigureC2BeaconAction.html">primaite.game.agent.actions.software.ConfigureC2BeaconAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.ConfigureDatabaseClientAction.html">primaite.game.agent.actions.software.ConfigureDatabaseClientAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.ConfigureDoSBotAction.html">primaite.game.agent.actions.software.ConfigureDoSBotAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.ConfigureRansomwareScriptAction.html">primaite.game.agent.actions.software.ConfigureRansomwareScriptAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.ExfiltrationC2ServerAction.html">primaite.game.agent.actions.software.ExfiltrationC2ServerAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.NodeSendRemoteCommandAction.html">primaite.game.agent.actions.software.NodeSendRemoteCommandAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.RansomwareConfigureC2ServerAction.html">primaite.game.agent.actions.software.RansomwareConfigureC2ServerAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.RansomwareLaunchC2ServerAction.html">primaite.game.agent.actions.software.RansomwareLaunchC2ServerAction</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.actions.software.TerminalC2ServerAction.html">primaite.game.agent.actions.software.TerminalC2ServerAction</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.agent_log.html">primaite.game.agent.agent_log</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of primaite.game.agent.agent_log</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.agent_log.AgentLog.html">primaite.game.agent.agent_log.AgentLog</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.interface.html">primaite.game.agent.interface</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of primaite.game.agent.interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.interface.AbstractAgent.html">primaite.game.agent.interface.AbstractAgent</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.interface.AbstractScriptedAgent.html">primaite.game.agent.interface.AbstractScriptedAgent</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.interface.AgentHistoryItem.html">primaite.game.agent.interface.AgentHistoryItem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.interface.ProxyAgent.html">primaite.game.agent.interface.ProxyAgent</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.html">primaite.game.agent.observations</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.acl_observation.html">primaite.game.agent.observations.acl_observation</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.acl_observation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.acl_observation.ACLObservation.html">primaite.game.agent.observations.acl_observation.ACLObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.file_system_observations.html">primaite.game.agent.observations.file_system_observations</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.file_system_observations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.file_system_observations.FileObservation.html">primaite.game.agent.observations.file_system_observations.FileObservation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.file_system_observations.FolderObservation.html">primaite.game.agent.observations.file_system_observations.FolderObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.firewall_observation.html">primaite.game.agent.observations.firewall_observation</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.firewall_observation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.firewall_observation.FirewallObservation.html">primaite.game.agent.observations.firewall_observation.FirewallObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.host_observations.html">primaite.game.agent.observations.host_observations</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.host_observations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.host_observations.HostObservation.html">primaite.game.agent.observations.host_observations.HostObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.link_observation.html">primaite.game.agent.observations.link_observation</a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.link_observation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.link_observation.LinkObservation.html">primaite.game.agent.observations.link_observation.LinkObservation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.link_observation.LinksObservation.html">primaite.game.agent.observations.link_observation.LinksObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.nic_observations.html">primaite.game.agent.observations.nic_observations</a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.nic_observations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.nic_observations.NICObservation.html">primaite.game.agent.observations.nic_observations.NICObservation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.nic_observations.PortObservation.html">primaite.game.agent.observations.nic_observations.PortObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.node_observations.html">primaite.game.agent.observations.node_observations</a><input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" role="switch" type="checkbox"/><label for="toctree-checkbox-35"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.node_observations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.node_observations.NodesObservation.html">primaite.game.agent.observations.node_observations.NodesObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.observation_manager.html">primaite.game.agent.observations.observation_manager</a><input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" role="switch" type="checkbox"/><label for="toctree-checkbox-36"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.observation_manager</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.observation_manager.NestedObservation.html">primaite.game.agent.observations.observation_manager.NestedObservation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.observation_manager.NullObservation.html">primaite.game.agent.observations.observation_manager.NullObservation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.observation_manager.ObservationManager.html">primaite.game.agent.observations.observation_manager.ObservationManager</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.observations.html">primaite.game.agent.observations.observations</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.observations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.observations.AbstractObservation.html">primaite.game.agent.observations.observations.AbstractObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.router_observation.html">primaite.game.agent.observations.router_observation</a><input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.router_observation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.router_observation.RouterObservation.html">primaite.game.agent.observations.router_observation.RouterObservation</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.software_observation.html">primaite.game.agent.observations.software_observation</a><input class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" role="switch" type="checkbox"/><label for="toctree-checkbox-39"><div class="visually-hidden">Toggle navigation of primaite.game.agent.observations.software_observation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.software_observation.ApplicationObservation.html">primaite.game.agent.observations.software_observation.ApplicationObservation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.observations.software_observation.ServiceObservation.html">primaite.game.agent.observations.software_observation.ServiceObservation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.html">primaite.game.agent.rewards</a><input class="toctree-checkbox" id="toctree-checkbox-40" name="toctree-checkbox-40" role="switch" type="checkbox"/><label for="toctree-checkbox-40"><div class="visually-hidden">Toggle navigation of primaite.game.agent.rewards</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.AbstractReward.html">primaite.game.agent.rewards.AbstractReward</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.ActionPenalty.html">primaite.game.agent.rewards.ActionPenalty</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.DatabaseFileIntegrity.html">primaite.game.agent.rewards.DatabaseFileIntegrity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.DummyReward.html">primaite.game.agent.rewards.DummyReward</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.GreenAdminDatabaseUnreachablePenalty.html">primaite.game.agent.rewards.GreenAdminDatabaseUnreachablePenalty</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.RewardFunction.html">primaite.game.agent.rewards.RewardFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.SharedReward.html">primaite.game.agent.rewards.SharedReward</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.WebServer404Penalty.html">primaite.game.agent.rewards.WebServer404Penalty</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.rewards.WebpageUnavailablePenalty.html">primaite.game.agent.rewards.WebpageUnavailablePenalty</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.html">primaite.game.agent.scripted_agents</a><input class="toctree-checkbox" id="toctree-checkbox-41" name="toctree-checkbox-41" role="switch" type="checkbox"/><label for="toctree-checkbox-41"><div class="visually-hidden">Toggle navigation of primaite.game.agent.scripted_agents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP001.html">primaite.game.agent.scripted_agents.TAP001</a><input class="toctree-checkbox" id="toctree-checkbox-42" name="toctree-checkbox-42" role="switch" type="checkbox"/><label for="toctree-checkbox-42"><div class="visually-hidden">Toggle navigation of primaite.game.agent.scripted_agents.TAP001</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP001.MobileMalwareKillChain.html">primaite.game.agent.scripted_agents.TAP001.MobileMalwareKillChain</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP001.MobileMalwareKillChainOptions.html">primaite.game.agent.scripted_agents.TAP001.MobileMalwareKillChainOptions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP001.PortStatus.html">primaite.game.agent.scripted_agents.TAP001.PortStatus</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP001.TAP001.html">primaite.game.agent.scripted_agents.TAP001.TAP001</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP003.html">primaite.game.agent.scripted_agents.TAP003</a><input class="toctree-checkbox" id="toctree-checkbox-43" name="toctree-checkbox-43" role="switch" type="checkbox"/><label for="toctree-checkbox-43"><div class="visually-hidden">Toggle navigation of primaite.game.agent.scripted_agents.TAP003</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP003.InsiderKillChain.html">primaite.game.agent.scripted_agents.TAP003.InsiderKillChain</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP003.InsiderKillChainOptions.html">primaite.game.agent.scripted_agents.TAP003.InsiderKillChainOptions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.TAP003.TAP003.html">primaite.game.agent.scripted_agents.TAP003.TAP003</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.abstract_tap.html">primaite.game.agent.scripted_agents.abstract_tap</a><input class="toctree-checkbox" id="toctree-checkbox-44" name="toctree-checkbox-44" role="switch" type="checkbox"/><label for="toctree-checkbox-44"><div class="visually-hidden">Toggle navigation of primaite.game.agent.scripted_agents.abstract_tap</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.abstract_tap.AbstractTAP.html">primaite.game.agent.scripted_agents.abstract_tap.AbstractTAP</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.abstract_tap.BaseKillChain.html">primaite.game.agent.scripted_agents.abstract_tap.BaseKillChain</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.abstract_tap.KillChainOptions.html">primaite.game.agent.scripted_agents.abstract_tap.KillChainOptions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.abstract_tap.KillChainStageOptions.html">primaite.game.agent.scripted_agents.abstract_tap.KillChainStageOptions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.abstract_tap.KillChainStageProgress.html">primaite.game.agent.scripted_agents.abstract_tap.KillChainStageProgress</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.data_manipulation_bot.html">primaite.game.agent.scripted_agents.data_manipulation_bot</a><input class="toctree-checkbox" id="toctree-checkbox-45" name="toctree-checkbox-45" role="switch" type="checkbox"/><label for="toctree-checkbox-45"><div class="visually-hidden">Toggle navigation of primaite.game.agent.scripted_agents.data_manipulation_bot</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.data_manipulation_bot.DataManipulationAgent.html">primaite.game.agent.scripted_agents.data_manipulation_bot.DataManipulationAgent</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.probabilistic_agent.html">primaite.game.agent.scripted_agents.probabilistic_agent</a><input class="toctree-checkbox" id="toctree-checkbox-46" name="toctree-checkbox-46" role="switch" type="checkbox"/><label for="toctree-checkbox-46"><div class="visually-hidden">Toggle navigation of primaite.game.agent.scripted_agents.probabilistic_agent</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.probabilistic_agent.ProbabilisticAgent.html">primaite.game.agent.scripted_agents.probabilistic_agent.ProbabilisticAgent</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.random_agent.html">primaite.game.agent.scripted_agents.random_agent</a><input class="toctree-checkbox" id="toctree-checkbox-47" name="toctree-checkbox-47" role="switch" type="checkbox"/><label for="toctree-checkbox-47"><div class="visually-hidden">Toggle navigation of primaite.game.agent.scripted_agents.random_agent</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.random_agent.PeriodicAgent.html">primaite.game.agent.scripted_agents.random_agent.PeriodicAgent</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.game.agent.scripted_agents.random_agent.RandomAgent.html">primaite.game.agent.scripted_agents.random_agent.RandomAgent</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.agent.utils.html">primaite.game.agent.utils</a><input class="toctree-checkbox" id="toctree-checkbox-48" name="toctree-checkbox-48" role="switch" type="checkbox"/><label for="toctree-checkbox-48"><div class="visually-hidden">Toggle navigation of primaite.game.agent.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.utils.NOT_PRESENT_IN_STATE.html">primaite.game.agent.utils.NOT_PRESENT_IN_STATE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.game.agent.utils.access_from_nested_dict.html">primaite.game.agent.utils.access_from_nested_dict</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.game.html">primaite.game.game</a><input class="toctree-checkbox" id="toctree-checkbox-49" name="toctree-checkbox-49" role="switch" type="checkbox"/><label for="toctree-checkbox-49"><div class="visually-hidden">Toggle navigation of primaite.game.game</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.game.game.SERVICE_TYPES_MAPPING.html">primaite.game.game.SERVICE_TYPES_MAPPING</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.game.game.PrimaiteGame.html">primaite.game.game.PrimaiteGame</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.game.game.PrimaiteGameOptions.html">primaite.game.game.PrimaiteGameOptions</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.game.science.html">primaite.game.science</a><input class="toctree-checkbox" id="toctree-checkbox-50" name="toctree-checkbox-50" role="switch" type="checkbox"/><label for="toctree-checkbox-50"><div class="visually-hidden">Toggle navigation of primaite.game.science</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.game.science.graph_has_cycle.html">primaite.game.science.graph_has_cycle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.game.science.simulate_trial.html">primaite.game.science.simulate_trial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.game.science.topological_sort.html">primaite.game.science.topological_sort</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.interface.html">primaite.interface</a><input class="toctree-checkbox" id="toctree-checkbox-51" name="toctree-checkbox-51" role="switch" type="checkbox"/><label for="toctree-checkbox-51"><div class="visually-hidden">Toggle navigation of primaite.interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.interface.request.html">primaite.interface.request</a><input class="toctree-checkbox" id="toctree-checkbox-52" name="toctree-checkbox-52" role="switch" type="checkbox"/><label for="toctree-checkbox-52"><div class="visually-hidden">Toggle navigation of primaite.interface.request</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.interface.request.RequestResponse.html">primaite.interface.request.RequestResponse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.interface.request.RequestResponse.html">primaite.interface.request.RequestResponse</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.session.html">primaite.session</a><input class="toctree-checkbox" id="toctree-checkbox-53" name="toctree-checkbox-53" role="switch" type="checkbox"/><label for="toctree-checkbox-53"><div class="visually-hidden">Toggle navigation of primaite.session</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.session.environment.html">primaite.session.environment</a><input class="toctree-checkbox" id="toctree-checkbox-54" name="toctree-checkbox-54" role="switch" type="checkbox"/><label for="toctree-checkbox-54"><div class="visually-hidden">Toggle navigation of primaite.session.environment</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.environment.log_seed_value.html">primaite.session.environment.log_seed_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.environment.set_random_seed.html">primaite.session.environment.set_random_seed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.environment.PrimaiteGymEnv.html">primaite.session.environment.PrimaiteGymEnv</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.session.episode_schedule.html">primaite.session.episode_schedule</a><input class="toctree-checkbox" id="toctree-checkbox-55" name="toctree-checkbox-55" role="switch" type="checkbox"/><label for="toctree-checkbox-55"><div class="visually-hidden">Toggle navigation of primaite.session.episode_schedule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.episode_schedule.build_scheduler.html">primaite.session.episode_schedule.build_scheduler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.episode_schedule.ConstantEpisodeScheduler.html">primaite.session.episode_schedule.ConstantEpisodeScheduler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.episode_schedule.EpisodeListScheduler.html">primaite.session.episode_schedule.EpisodeListScheduler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.episode_schedule.EpisodeScheduler.html">primaite.session.episode_schedule.EpisodeScheduler</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.session.io.html">primaite.session.io</a><input class="toctree-checkbox" id="toctree-checkbox-56" name="toctree-checkbox-56" role="switch" type="checkbox"/><label for="toctree-checkbox-56"><div class="visually-hidden">Toggle navigation of primaite.session.io</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.io.PrimaiteIO.html">primaite.session.io.PrimaiteIO</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.session.ray_envs.html">primaite.session.ray_envs</a><input class="toctree-checkbox" id="toctree-checkbox-57" name="toctree-checkbox-57" role="switch" type="checkbox"/><label for="toctree-checkbox-57"><div class="visually-hidden">Toggle navigation of primaite.session.ray_envs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.ray_envs.PrimaiteRayEnv.html">primaite.session.ray_envs.PrimaiteRayEnv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.session.ray_envs.PrimaiteRayMARLEnv.html">primaite.session.ray_envs.PrimaiteRayMARLEnv</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.setup.html">primaite.setup</a><input class="toctree-checkbox" id="toctree-checkbox-58" name="toctree-checkbox-58" role="switch" type="checkbox"/><label for="toctree-checkbox-58"><div class="visually-hidden">Toggle navigation of primaite.setup</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.setup.reset_demo_notebooks.html">primaite.setup.reset_demo_notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-59" name="toctree-checkbox-59" role="switch" type="checkbox"/><label for="toctree-checkbox-59"><div class="visually-hidden">Toggle navigation of primaite.setup.reset_demo_notebooks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.setup.reset_demo_notebooks.run.html">primaite.setup.reset_demo_notebooks.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.setup.reset_demo_notebooks.should_copy_file.html">primaite.setup.reset_demo_notebooks.should_copy_file</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.setup.reset_example_configs.html">primaite.setup.reset_example_configs</a><input class="toctree-checkbox" id="toctree-checkbox-60" name="toctree-checkbox-60" role="switch" type="checkbox"/><label for="toctree-checkbox-60"><div class="visually-hidden">Toggle navigation of primaite.setup.reset_example_configs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.setup.reset_example_configs.run.html">primaite.setup.reset_example_configs.run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.html">primaite.simulator</a><input class="toctree-checkbox" id="toctree-checkbox-61" name="toctree-checkbox-61" role="switch" type="checkbox"/><label for="toctree-checkbox-61"><div class="visually-hidden">Toggle navigation of primaite.simulator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/primaite.simulator.LogLevel.html">primaite.simulator.LogLevel</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.core.html">primaite.simulator.core</a><input class="toctree-checkbox" id="toctree-checkbox-62" name="toctree-checkbox-62" role="switch" type="checkbox"/><label for="toctree-checkbox-62"><div class="visually-hidden">Toggle navigation of primaite.simulator.core</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.simulator.core.AllowAllValidator.html">primaite.simulator.core.AllowAllValidator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.simulator.core.RequestManager.html">primaite.simulator.core.RequestManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.simulator.core.RequestPermissionValidator.html">primaite.simulator.core.RequestPermissionValidator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.simulator.core.RequestType.html">primaite.simulator.core.RequestType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.simulator.core.SimComponent.html">primaite.simulator.core.SimComponent</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.html">primaite.simulator.domain</a><input class="toctree-checkbox" id="toctree-checkbox-63" name="toctree-checkbox-63" role="switch" type="checkbox"/><label for="toctree-checkbox-63"><div class="visually-hidden">Toggle navigation of primaite.simulator.domain</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.account.html">primaite.simulator.domain.account</a><input class="toctree-checkbox" id="toctree-checkbox-64" name="toctree-checkbox-64" role="switch" type="checkbox"/><label for="toctree-checkbox-64"><div class="visually-hidden">Toggle navigation of primaite.simulator.domain.account</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.account.Account.html">primaite.simulator.domain.account.Account</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.account.AccountType.html">primaite.simulator.domain.account.AccountType</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.account.PasswordPolicyLevel.html">primaite.simulator.domain.account.PasswordPolicyLevel</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.controller.html">primaite.simulator.domain.controller</a><input class="toctree-checkbox" id="toctree-checkbox-65" name="toctree-checkbox-65" role="switch" type="checkbox"/><label for="toctree-checkbox-65"><div class="visually-hidden">Toggle navigation of primaite.simulator.domain.controller</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.controller.AccountGroup.html">primaite.simulator.domain.controller.AccountGroup</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.controller.DomainController.html">primaite.simulator.domain.controller.DomainController</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.controller.GroupMembershipValidator.html">primaite.simulator.domain.controller.GroupMembershipValidator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.controller.temp_application.html">primaite.simulator.domain.controller.temp_application</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.controller.temp_file.html">primaite.simulator.domain.controller.temp_file</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.controller.temp_folder.html">primaite.simulator.domain.controller.temp_folder</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.domain.controller.temp_node.html">primaite.simulator.domain.controller.temp_node</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.html">primaite.simulator.file_system</a><input class="toctree-checkbox" id="toctree-checkbox-66" name="toctree-checkbox-66" role="switch" type="checkbox"/><label for="toctree-checkbox-66"><div class="visually-hidden">Toggle navigation of primaite.simulator.file_system</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file.html">primaite.simulator.file_system.file</a><input class="toctree-checkbox" id="toctree-checkbox-67" name="toctree-checkbox-67" role="switch" type="checkbox"/><label for="toctree-checkbox-67"><div class="visually-hidden">Toggle navigation of primaite.simulator.file_system.file</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file.File.html">primaite.simulator.file_system.file.File</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_system.html">primaite.simulator.file_system.file_system</a><input class="toctree-checkbox" id="toctree-checkbox-68" name="toctree-checkbox-68" role="switch" type="checkbox"/><label for="toctree-checkbox-68"><div class="visually-hidden">Toggle navigation of primaite.simulator.file_system.file_system</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_system.FileSystem.html">primaite.simulator.file_system.file_system.FileSystem</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_system_item_abc.html">primaite.simulator.file_system.file_system_item_abc</a><input class="toctree-checkbox" id="toctree-checkbox-69" name="toctree-checkbox-69" role="switch" type="checkbox"/><label for="toctree-checkbox-69"><div class="visually-hidden">Toggle navigation of primaite.simulator.file_system.file_system_item_abc</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_system_item_abc.convert_size.html">primaite.simulator.file_system.file_system_item_abc.convert_size</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_system_item_abc.FileSystemItemABC.html">primaite.simulator.file_system.file_system_item_abc.FileSystemItemABC</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_system_item_abc.FileSystemItemHealthStatus.html">primaite.simulator.file_system.file_system_item_abc.FileSystemItemHealthStatus</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_type.html">primaite.simulator.file_system.file_type</a><input class="toctree-checkbox" id="toctree-checkbox-70" name="toctree-checkbox-70" role="switch" type="checkbox"/><label for="toctree-checkbox-70"><div class="visually-hidden">Toggle navigation of primaite.simulator.file_system.file_type</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_type.get_file_type_from_extension.html">primaite.simulator.file_system.file_type.get_file_type_from_extension</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.file_type.FileType.html">primaite.simulator.file_system.file_type.FileType</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.folder.html">primaite.simulator.file_system.folder</a><input class="toctree-checkbox" id="toctree-checkbox-71" name="toctree-checkbox-71" role="switch" type="checkbox"/><label for="toctree-checkbox-71"><div class="visually-hidden">Toggle navigation of primaite.simulator.file_system.folder</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.file_system.folder.Folder.html">primaite.simulator.file_system.folder.Folder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.html">primaite.simulator.network</a><input class="toctree-checkbox" id="toctree-checkbox-72" name="toctree-checkbox-72" role="switch" type="checkbox"/><label for="toctree-checkbox-72"><div class="visually-hidden">Toggle navigation of primaite.simulator.network</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.airspace.html">primaite.simulator.network.airspace</a><input class="toctree-checkbox" id="toctree-checkbox-73" name="toctree-checkbox-73" role="switch" type="checkbox"/><label for="toctree-checkbox-73"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.airspace</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.airspace.format_hertz.html">primaite.simulator.network.airspace.format_hertz</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.airspace.AirSpace.html">primaite.simulator.network.airspace.AirSpace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.airspace.AirSpaceFrequency.html">primaite.simulator.network.airspace.AirSpaceFrequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.airspace.IPWirelessNetworkInterface.html">primaite.simulator.network.airspace.IPWirelessNetworkInterface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.airspace.WirelessNetworkInterface.html">primaite.simulator.network.airspace.WirelessNetworkInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.container.html">primaite.simulator.network.container</a><input class="toctree-checkbox" id="toctree-checkbox-74" name="toctree-checkbox-74" role="switch" type="checkbox"/><label for="toctree-checkbox-74"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.container</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.container.Network.html">primaite.simulator.network.container.Network</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.creation.html">primaite.simulator.network.creation</a><input class="toctree-checkbox" id="toctree-checkbox-75" name="toctree-checkbox-75" role="switch" type="checkbox"/><label for="toctree-checkbox-75"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.creation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.creation.num_of_switches_required.html">primaite.simulator.network.creation.num_of_switches_required</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.creation.NetworkNodeAdder.html">primaite.simulator.network.creation.NetworkNodeAdder</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.creation.OfficeLANAdder.html">primaite.simulator.network.creation.OfficeLANAdder</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.html">primaite.simulator.network.hardware</a><input class="toctree-checkbox" id="toctree-checkbox-76" name="toctree-checkbox-76" role="switch" type="checkbox"/><label for="toctree-checkbox-76"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.html">primaite.simulator.network.hardware.base</a><input class="toctree-checkbox" id="toctree-checkbox-77" name="toctree-checkbox-77" role="switch" type="checkbox"/><label for="toctree-checkbox-77"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.base</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.generate_mac_address.html">primaite.simulator.network.hardware.base.generate_mac_address</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.IPWiredNetworkInterface.html">primaite.simulator.network.hardware.base.IPWiredNetworkInterface</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.Layer3Interface.html">primaite.simulator.network.hardware.base.Layer3Interface</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.Link.html">primaite.simulator.network.hardware.base.Link</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.NetworkInterface.html">primaite.simulator.network.hardware.base.NetworkInterface</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.Node.html">primaite.simulator.network.hardware.base.Node</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.RemoteUserSession.html">primaite.simulator.network.hardware.base.RemoteUserSession</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.User.html">primaite.simulator.network.hardware.base.User</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.UserManager.html">primaite.simulator.network.hardware.base.UserManager</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.UserSession.html">primaite.simulator.network.hardware.base.UserSession</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.UserSessionManager.html">primaite.simulator.network.hardware.base.UserSessionManager</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.base.WiredNetworkInterface.html">primaite.simulator.network.hardware.base.WiredNetworkInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.network_interface.html">primaite.simulator.network.hardware.network_interface</a><input class="toctree-checkbox" id="toctree-checkbox-78" name="toctree-checkbox-78" role="switch" type="checkbox"/><label for="toctree-checkbox-78"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.network_interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.network_interface.wireless.html">primaite.simulator.network.hardware.network_interface.wireless</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.node_operating_state.html">primaite.simulator.network.hardware.node_operating_state</a><input class="toctree-checkbox" id="toctree-checkbox-79" name="toctree-checkbox-79" role="switch" type="checkbox"/><label for="toctree-checkbox-79"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.node_operating_state</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.node_operating_state.NodeOperatingState.html">primaite.simulator.network.hardware.node_operating_state.NodeOperatingState</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.html">primaite.simulator.network.hardware.nodes</a><input class="toctree-checkbox" id="toctree-checkbox-80" name="toctree-checkbox-80" role="switch" type="checkbox"/><label for="toctree-checkbox-80"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.html">primaite.simulator.network.hardware.nodes.host</a><input class="toctree-checkbox" id="toctree-checkbox-81" name="toctree-checkbox-81" role="switch" type="checkbox"/><label for="toctree-checkbox-81"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.host</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.computer.html">primaite.simulator.network.hardware.nodes.host.computer</a><input class="toctree-checkbox" id="toctree-checkbox-82" name="toctree-checkbox-82" role="switch" type="checkbox"/><label for="toctree-checkbox-82"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.host.computer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.computer.Computer.html">primaite.simulator.network.hardware.nodes.host.computer.Computer</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.host_node.html">primaite.simulator.network.hardware.nodes.host.host_node</a><input class="toctree-checkbox" id="toctree-checkbox-83" name="toctree-checkbox-83" role="switch" type="checkbox"/><label for="toctree-checkbox-83"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.host.host_node</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.host_node.HostARP.html">primaite.simulator.network.hardware.nodes.host.host_node.HostARP</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.host_node.HostNode.html">primaite.simulator.network.hardware.nodes.host.host_node.HostNode</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.host_node.NIC.html">primaite.simulator.network.hardware.nodes.host.host_node.NIC</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.server.html">primaite.simulator.network.hardware.nodes.host.server</a><input class="toctree-checkbox" id="toctree-checkbox-84" name="toctree-checkbox-84" role="switch" type="checkbox"/><label for="toctree-checkbox-84"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.host.server</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.server.Printer.html">primaite.simulator.network.hardware.nodes.host.server.Printer</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.host.server.Server.html">primaite.simulator.network.hardware.nodes.host.server.Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.html">primaite.simulator.network.hardware.nodes.network</a><input class="toctree-checkbox" id="toctree-checkbox-85" name="toctree-checkbox-85" role="switch" type="checkbox"/><label for="toctree-checkbox-85"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.network</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.firewall.html">primaite.simulator.network.hardware.nodes.network.firewall</a><input class="toctree-checkbox" id="toctree-checkbox-86" name="toctree-checkbox-86" role="switch" type="checkbox"/><label for="toctree-checkbox-86"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.network.firewall</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.firewall.EXTERNAL_PORT_ID.html">primaite.simulator.network.hardware.nodes.network.firewall.EXTERNAL_PORT_ID</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.firewall.INTERNAL_PORT_ID.html">primaite.simulator.network.hardware.nodes.network.firewall.INTERNAL_PORT_ID</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.firewall.DMZ_PORT_ID.html">primaite.simulator.network.hardware.nodes.network.firewall.DMZ_PORT_ID</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.firewall.Firewall.html">primaite.simulator.network.hardware.nodes.network.firewall.Firewall</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.network_node.html">primaite.simulator.network.hardware.nodes.network.network_node</a><input class="toctree-checkbox" id="toctree-checkbox-87" name="toctree-checkbox-87" role="switch" type="checkbox"/><label for="toctree-checkbox-87"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.network.network_node</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.network_node.NetworkNode.html">primaite.simulator.network.hardware.nodes.network.network_node.NetworkNode</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.html">primaite.simulator.network.hardware.nodes.network.router</a><input class="toctree-checkbox" id="toctree-checkbox-88" name="toctree-checkbox-88" role="switch" type="checkbox"/><label for="toctree-checkbox-88"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.network.router</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.ip_matches_masked_range.html">primaite.simulator.network.hardware.nodes.network.router.ip_matches_masked_range</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.ACLAction.html">primaite.simulator.network.hardware.nodes.network.router.ACLAction</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.ACLRule.html">primaite.simulator.network.hardware.nodes.network.router.ACLRule</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.AccessControlList.html">primaite.simulator.network.hardware.nodes.network.router.AccessControlList</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.RouteEntry.html">primaite.simulator.network.hardware.nodes.network.router.RouteEntry</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.RouteTable.html">primaite.simulator.network.hardware.nodes.network.router.RouteTable</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.Router.html">primaite.simulator.network.hardware.nodes.network.router.Router</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.RouterARP.html">primaite.simulator.network.hardware.nodes.network.router.RouterARP</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.RouterICMP.html">primaite.simulator.network.hardware.nodes.network.router.RouterICMP</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.RouterInterface.html">primaite.simulator.network.hardware.nodes.network.router.RouterInterface</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.router.RouterSessionManager.html">primaite.simulator.network.hardware.nodes.network.router.RouterSessionManager</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.switch.html">primaite.simulator.network.hardware.nodes.network.switch</a><input class="toctree-checkbox" id="toctree-checkbox-89" name="toctree-checkbox-89" role="switch" type="checkbox"/><label for="toctree-checkbox-89"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.network.switch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.switch.Switch.html">primaite.simulator.network.hardware.nodes.network.switch.Switch</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.switch.SwitchPort.html">primaite.simulator.network.hardware.nodes.network.switch.SwitchPort</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.wireless_router.html">primaite.simulator.network.hardware.nodes.network.wireless_router</a><input class="toctree-checkbox" id="toctree-checkbox-90" name="toctree-checkbox-90" role="switch" type="checkbox"/><label for="toctree-checkbox-90"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.hardware.nodes.network.wireless_router</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.wireless_router.WirelessAccessPoint.html">primaite.simulator.network.hardware.nodes.network.wireless_router.WirelessAccessPoint</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.hardware.nodes.network.wireless_router.WirelessRouter.html">primaite.simulator.network.hardware.nodes.network.wireless_router.WirelessRouter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.networks.html">primaite.simulator.network.networks</a><input class="toctree-checkbox" id="toctree-checkbox-91" name="toctree-checkbox-91" role="switch" type="checkbox"/><label for="toctree-checkbox-91"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.networks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.networks.arcd_uc2_network.html">primaite.simulator.network.networks.arcd_uc2_network</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.networks.basic_lan_network_example.html">primaite.simulator.network.networks.basic_lan_network_example</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.networks.client_server_p2p_network_example.html">primaite.simulator.network.networks.client_server_p2p_network_example</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.networks.client_server_routed.html">primaite.simulator.network.networks.client_server_routed</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.networks.multi_lan_internet_network_example.html">primaite.simulator.network.networks.multi_lan_internet_network_example</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.networks.network_simulator_demo_example.html">primaite.simulator.network.networks.network_simulator_demo_example</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.nmne.html">primaite.simulator.network.nmne</a><input class="toctree-checkbox" id="toctree-checkbox-92" name="toctree-checkbox-92" role="switch" type="checkbox"/><label for="toctree-checkbox-92"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.nmne</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.nmne.NMNEConfig.html">primaite.simulator.network.nmne.NMNEConfig</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.html">primaite.simulator.network.protocols</a><input class="toctree-checkbox" id="toctree-checkbox-93" name="toctree-checkbox-93" role="switch" type="checkbox"/><label for="toctree-checkbox-93"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.arp.html">primaite.simulator.network.protocols.arp</a><input class="toctree-checkbox" id="toctree-checkbox-94" name="toctree-checkbox-94" role="switch" type="checkbox"/><label for="toctree-checkbox-94"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.arp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.arp.ARPEntry.html">primaite.simulator.network.protocols.arp.ARPEntry</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.arp.ARPPacket.html">primaite.simulator.network.protocols.arp.ARPPacket</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.dns.html">primaite.simulator.network.protocols.dns</a><input class="toctree-checkbox" id="toctree-checkbox-95" name="toctree-checkbox-95" role="switch" type="checkbox"/><label for="toctree-checkbox-95"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.dns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.dns.DNSPacket.html">primaite.simulator.network.protocols.dns.DNSPacket</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.dns.DNSReply.html">primaite.simulator.network.protocols.dns.DNSReply</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.dns.DNSRequest.html">primaite.simulator.network.protocols.dns.DNSRequest</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ftp.html">primaite.simulator.network.protocols.ftp</a><input class="toctree-checkbox" id="toctree-checkbox-96" name="toctree-checkbox-96" role="switch" type="checkbox"/><label for="toctree-checkbox-96"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.ftp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ftp.FTPCommand.html">primaite.simulator.network.protocols.ftp.FTPCommand</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ftp.FTPPacket.html">primaite.simulator.network.protocols.ftp.FTPPacket</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ftp.FTPStatusCode.html">primaite.simulator.network.protocols.ftp.FTPStatusCode</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.http.html">primaite.simulator.network.protocols.http</a><input class="toctree-checkbox" id="toctree-checkbox-97" name="toctree-checkbox-97" role="switch" type="checkbox"/><label for="toctree-checkbox-97"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.http</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.http.HttpRequestMethod.html">primaite.simulator.network.protocols.http.HttpRequestMethod</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.http.HttpRequestPacket.html">primaite.simulator.network.protocols.http.HttpRequestPacket</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.http.HttpResponsePacket.html">primaite.simulator.network.protocols.http.HttpResponsePacket</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.http.HttpStatusCode.html">primaite.simulator.network.protocols.http.HttpStatusCode</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.icmp.html">primaite.simulator.network.protocols.icmp</a><input class="toctree-checkbox" id="toctree-checkbox-98" name="toctree-checkbox-98" role="switch" type="checkbox"/><label for="toctree-checkbox-98"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.icmp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.icmp.get_icmp_type_code_description.html">primaite.simulator.network.protocols.icmp.get_icmp_type_code_description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.icmp.ICMPPacket.html">primaite.simulator.network.protocols.icmp.ICMPPacket</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.icmp.ICMPType.html">primaite.simulator.network.protocols.icmp.ICMPType</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.masquerade.html">primaite.simulator.network.protocols.masquerade</a><input class="toctree-checkbox" id="toctree-checkbox-99" name="toctree-checkbox-99" role="switch" type="checkbox"/><label for="toctree-checkbox-99"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.masquerade</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.masquerade.C2Packet.html">primaite.simulator.network.protocols.masquerade.C2Packet</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.masquerade.MasqueradePacket.html">primaite.simulator.network.protocols.masquerade.MasqueradePacket</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ntp.html">primaite.simulator.network.protocols.ntp</a><input class="toctree-checkbox" id="toctree-checkbox-100" name="toctree-checkbox-100" role="switch" type="checkbox"/><label for="toctree-checkbox-100"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.ntp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ntp.NTPPacket.html">primaite.simulator.network.protocols.ntp.NTPPacket</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ntp.NTPReply.html">primaite.simulator.network.protocols.ntp.NTPReply</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.packet.html">primaite.simulator.network.protocols.packet</a><input class="toctree-checkbox" id="toctree-checkbox-101" name="toctree-checkbox-101" role="switch" type="checkbox"/><label for="toctree-checkbox-101"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.packet</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.packet.DataPacket.html">primaite.simulator.network.protocols.packet.DataPacket</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ssh.html">primaite.simulator.network.protocols.ssh</a><input class="toctree-checkbox" id="toctree-checkbox-102" name="toctree-checkbox-102" role="switch" type="checkbox"/><label for="toctree-checkbox-102"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.protocols.ssh</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ssh.SSHConnectionMessage.html">primaite.simulator.network.protocols.ssh.SSHConnectionMessage</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ssh.SSHPacket.html">primaite.simulator.network.protocols.ssh.SSHPacket</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ssh.SSHTransportMessage.html">primaite.simulator.network.protocols.ssh.SSHTransportMessage</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.protocols.ssh.SSHUserCredentials.html">primaite.simulator.network.protocols.ssh.SSHUserCredentials</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.html">primaite.simulator.network.transmission</a><input class="toctree-checkbox" id="toctree-checkbox-103" name="toctree-checkbox-103" role="switch" type="checkbox"/><label for="toctree-checkbox-103"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.transmission</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.data_link_layer.html">primaite.simulator.network.transmission.data_link_layer</a><input class="toctree-checkbox" id="toctree-checkbox-104" name="toctree-checkbox-104" role="switch" type="checkbox"/><label for="toctree-checkbox-104"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.transmission.data_link_layer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.data_link_layer.EthernetHeader.html">primaite.simulator.network.transmission.data_link_layer.EthernetHeader</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.data_link_layer.Frame.html">primaite.simulator.network.transmission.data_link_layer.Frame</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.network_layer.html">primaite.simulator.network.transmission.network_layer</a><input class="toctree-checkbox" id="toctree-checkbox-105" name="toctree-checkbox-105" role="switch" type="checkbox"/><label for="toctree-checkbox-105"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.transmission.network_layer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.network_layer.IPPacket.html">primaite.simulator.network.transmission.network_layer.IPPacket</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.network_layer.Precedence.html">primaite.simulator.network.transmission.network_layer.Precedence</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.primaite_layer.html">primaite.simulator.network.transmission.primaite_layer</a><input class="toctree-checkbox" id="toctree-checkbox-106" name="toctree-checkbox-106" role="switch" type="checkbox"/><label for="toctree-checkbox-106"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.transmission.primaite_layer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.primaite_layer.AgentSource.html">primaite.simulator.network.transmission.primaite_layer.AgentSource</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.primaite_layer.DataStatus.html">primaite.simulator.network.transmission.primaite_layer.DataStatus</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.primaite_layer.PrimaiteHeader.html">primaite.simulator.network.transmission.primaite_layer.PrimaiteHeader</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.transport_layer.html">primaite.simulator.network.transmission.transport_layer</a><input class="toctree-checkbox" id="toctree-checkbox-107" name="toctree-checkbox-107" role="switch" type="checkbox"/><label for="toctree-checkbox-107"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.transmission.transport_layer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.transport_layer.TCPFlags.html">primaite.simulator.network.transmission.transport_layer.TCPFlags</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.transport_layer.TCPHeader.html">primaite.simulator.network.transmission.transport_layer.TCPHeader</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.transmission.transport_layer.UDPHeader.html">primaite.simulator.network.transmission.transport_layer.UDPHeader</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.utils.html">primaite.simulator.network.utils</a><input class="toctree-checkbox" id="toctree-checkbox-108" name="toctree-checkbox-108" role="switch" type="checkbox"/><label for="toctree-checkbox-108"><div class="visually-hidden">Toggle navigation of primaite.simulator.network.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.utils.convert_bytes_to_megabits.html">primaite.simulator.network.utils.convert_bytes_to_megabits</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.network.utils.convert_megabits_to_bytes.html">primaite.simulator.network.utils.convert_megabits_to_bytes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.sim_container.html">primaite.simulator.sim_container</a><input class="toctree-checkbox" id="toctree-checkbox-109" name="toctree-checkbox-109" role="switch" type="checkbox"/><label for="toctree-checkbox-109"><div class="visually-hidden">Toggle navigation of primaite.simulator.sim_container</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.simulator.sim_container.Simulation.html">primaite.simulator.sim_container.Simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.html">primaite.simulator.system</a><input class="toctree-checkbox" id="toctree-checkbox-110" name="toctree-checkbox-110" role="switch" type="checkbox"/><label for="toctree-checkbox-110"><div class="visually-hidden">Toggle navigation of primaite.simulator.system</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.html">primaite.simulator.system.applications</a><input class="toctree-checkbox" id="toctree-checkbox-111" name="toctree-checkbox-111" role="switch" type="checkbox"/><label for="toctree-checkbox-111"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.application.html">primaite.simulator.system.applications.application</a><input class="toctree-checkbox" id="toctree-checkbox-112" name="toctree-checkbox-112" role="switch" type="checkbox"/><label for="toctree-checkbox-112"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.application</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.application.Application.html">primaite.simulator.system.applications.application.Application</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.application.ApplicationOperatingState.html">primaite.simulator.system.applications.application.ApplicationOperatingState</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.database_client.html">primaite.simulator.system.applications.database_client</a><input class="toctree-checkbox" id="toctree-checkbox-113" name="toctree-checkbox-113" role="switch" type="checkbox"/><label for="toctree-checkbox-113"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.database_client</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.database_client.DatabaseClient.html">primaite.simulator.system.applications.database_client.DatabaseClient</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.database_client.DatabaseClientConnection.html">primaite.simulator.system.applications.database_client.DatabaseClientConnection</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.nmap.html">primaite.simulator.system.applications.nmap</a><input class="toctree-checkbox" id="toctree-checkbox-114" name="toctree-checkbox-114" role="switch" type="checkbox"/><label for="toctree-checkbox-114"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.nmap</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.nmap.NMAP.html">primaite.simulator.system.applications.nmap.NMAP</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.nmap.PortScanPayload.html">primaite.simulator.system.applications.nmap.PortScanPayload</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.html">primaite.simulator.system.applications.red_applications</a><input class="toctree-checkbox" id="toctree-checkbox-115" name="toctree-checkbox-115" role="switch" type="checkbox"/><label for="toctree-checkbox-115"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.red_applications</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.html">primaite.simulator.system.applications.red_applications.c2</a><input class="toctree-checkbox" id="toctree-checkbox-116" name="toctree-checkbox-116" role="switch" type="checkbox"/><label for="toctree-checkbox-116"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.red_applications.c2</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.CommandOpts.html">primaite.simulator.system.applications.red_applications.c2.CommandOpts</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.ExfilOpts.html">primaite.simulator.system.applications.red_applications.c2.ExfilOpts</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.RansomwareOpts.html">primaite.simulator.system.applications.red_applications.c2.RansomwareOpts</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.RemoteOpts.html">primaite.simulator.system.applications.red_applications.c2.RemoteOpts</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.TerminalOpts.html">primaite.simulator.system.applications.red_applications.c2.TerminalOpts</a></li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.abstract_c2.html">primaite.simulator.system.applications.red_applications.c2.abstract_c2</a><input class="toctree-checkbox" id="toctree-checkbox-117" name="toctree-checkbox-117" role="switch" type="checkbox"/><label for="toctree-checkbox-117"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.red_applications.c2.abstract_c2</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.abstract_c2.AbstractC2.html">primaite.simulator.system.applications.red_applications.c2.abstract_c2.AbstractC2</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.abstract_c2.C2Command.html">primaite.simulator.system.applications.red_applications.c2.abstract_c2.C2Command</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.abstract_c2.C2Payload.html">primaite.simulator.system.applications.red_applications.c2.abstract_c2.C2Payload</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.c2_beacon.html">primaite.simulator.system.applications.red_applications.c2.c2_beacon</a><input class="toctree-checkbox" id="toctree-checkbox-118" name="toctree-checkbox-118" role="switch" type="checkbox"/><label for="toctree-checkbox-118"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.red_applications.c2.c2_beacon</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.c2_beacon.C2Beacon.html">primaite.simulator.system.applications.red_applications.c2.c2_beacon.C2Beacon</a></li>
+</ul>
+</li>
+<li class="toctree-l7 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.c2_server.html">primaite.simulator.system.applications.red_applications.c2.c2_server</a><input class="toctree-checkbox" id="toctree-checkbox-119" name="toctree-checkbox-119" role="switch" type="checkbox"/><label for="toctree-checkbox-119"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.red_applications.c2.c2_server</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l8"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.c2.c2_server.C2Server.html">primaite.simulator.system.applications.red_applications.c2.c2_server.C2Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.data_manipulation_bot.html">primaite.simulator.system.applications.red_applications.data_manipulation_bot</a><input class="toctree-checkbox" id="toctree-checkbox-120" name="toctree-checkbox-120" role="switch" type="checkbox"/><label for="toctree-checkbox-120"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.red_applications.data_manipulation_bot</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.data_manipulation_bot.DataManipulationAttackStage.html">primaite.simulator.system.applications.red_applications.data_manipulation_bot.DataManipulationAttackStage</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.data_manipulation_bot.DataManipulationBot.html">primaite.simulator.system.applications.red_applications.data_manipulation_bot.DataManipulationBot</a></li>
+</ul>
+</li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.dos_bot.html">primaite.simulator.system.applications.red_applications.dos_bot</a><input class="toctree-checkbox" id="toctree-checkbox-121" name="toctree-checkbox-121" role="switch" type="checkbox"/><label for="toctree-checkbox-121"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.red_applications.dos_bot</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.dos_bot.DoSAttackStage.html">primaite.simulator.system.applications.red_applications.dos_bot.DoSAttackStage</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.dos_bot.DoSBot.html">primaite.simulator.system.applications.red_applications.dos_bot.DoSBot</a></li>
+</ul>
+</li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.ransomware_script.html">primaite.simulator.system.applications.red_applications.ransomware_script</a><input class="toctree-checkbox" id="toctree-checkbox-122" name="toctree-checkbox-122" role="switch" type="checkbox"/><label for="toctree-checkbox-122"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.red_applications.ransomware_script</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.red_applications.ransomware_script.RansomwareScript.html">primaite.simulator.system.applications.red_applications.ransomware_script.RansomwareScript</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.web_browser.html">primaite.simulator.system.applications.web_browser</a><input class="toctree-checkbox" id="toctree-checkbox-123" name="toctree-checkbox-123" role="switch" type="checkbox"/><label for="toctree-checkbox-123"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.applications.web_browser</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.applications.web_browser.WebBrowser.html">primaite.simulator.system.applications.web_browser.WebBrowser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.html">primaite.simulator.system.core</a><input class="toctree-checkbox" id="toctree-checkbox-124" name="toctree-checkbox-124" role="switch" type="checkbox"/><label for="toctree-checkbox-124"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.core</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.packet_capture.html">primaite.simulator.system.core.packet_capture</a><input class="toctree-checkbox" id="toctree-checkbox-125" name="toctree-checkbox-125" role="switch" type="checkbox"/><label for="toctree-checkbox-125"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.core.packet_capture</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.packet_capture.PacketCapture.html">primaite.simulator.system.core.packet_capture.PacketCapture</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.session_manager.html">primaite.simulator.system.core.session_manager</a><input class="toctree-checkbox" id="toctree-checkbox-126" name="toctree-checkbox-126" role="switch" type="checkbox"/><label for="toctree-checkbox-126"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.core.session_manager</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.session_manager.Session.html">primaite.simulator.system.core.session_manager.Session</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.session_manager.SessionManager.html">primaite.simulator.system.core.session_manager.SessionManager</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.software_manager.html">primaite.simulator.system.core.software_manager</a><input class="toctree-checkbox" id="toctree-checkbox-127" name="toctree-checkbox-127" role="switch" type="checkbox"/><label for="toctree-checkbox-127"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.core.software_manager</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.software_manager.SoftwareManager.html">primaite.simulator.system.core.software_manager.SoftwareManager</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.sys_log.html">primaite.simulator.system.core.sys_log</a><input class="toctree-checkbox" id="toctree-checkbox-128" name="toctree-checkbox-128" role="switch" type="checkbox"/><label for="toctree-checkbox-128"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.core.sys_log</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.core.sys_log.SysLog.html">primaite.simulator.system.core.sys_log.SysLog</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.processes.html">primaite.simulator.system.processes</a><input class="toctree-checkbox" id="toctree-checkbox-129" name="toctree-checkbox-129" role="switch" type="checkbox"/><label for="toctree-checkbox-129"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.processes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.processes.process.html">primaite.simulator.system.processes.process</a><input class="toctree-checkbox" id="toctree-checkbox-130" name="toctree-checkbox-130" role="switch" type="checkbox"/><label for="toctree-checkbox-130"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.processes.process</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.processes.process.Process.html">primaite.simulator.system.processes.process.Process</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.processes.process.ProcessOperatingState.html">primaite.simulator.system.processes.process.ProcessOperatingState</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.html">primaite.simulator.system.services</a><input class="toctree-checkbox" id="toctree-checkbox-131" name="toctree-checkbox-131" role="switch" type="checkbox"/><label for="toctree-checkbox-131"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.access.html">primaite.simulator.system.services.access</a><input class="toctree-checkbox" id="toctree-checkbox-132" name="toctree-checkbox-132" role="switch" type="checkbox"/><label for="toctree-checkbox-132"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.access</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.access.user_manager.html">primaite.simulator.system.services.access.user_manager</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.access.user_session_manager.html">primaite.simulator.system.services.access.user_session_manager</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.arp.html">primaite.simulator.system.services.arp</a><input class="toctree-checkbox" id="toctree-checkbox-133" name="toctree-checkbox-133" role="switch" type="checkbox"/><label for="toctree-checkbox-133"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.arp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.arp.arp.html">primaite.simulator.system.services.arp.arp</a><input class="toctree-checkbox" id="toctree-checkbox-134" name="toctree-checkbox-134" role="switch" type="checkbox"/><label for="toctree-checkbox-134"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.arp.arp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.arp.arp.ARP.html">primaite.simulator.system.services.arp.arp.ARP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.database.html">primaite.simulator.system.services.database</a><input class="toctree-checkbox" id="toctree-checkbox-135" name="toctree-checkbox-135" role="switch" type="checkbox"/><label for="toctree-checkbox-135"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.database</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.database.database_service.html">primaite.simulator.system.services.database.database_service</a><input class="toctree-checkbox" id="toctree-checkbox-136" name="toctree-checkbox-136" role="switch" type="checkbox"/><label for="toctree-checkbox-136"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.database.database_service</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.database.database_service.DatabaseService.html">primaite.simulator.system.services.database.database_service.DatabaseService</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.dns.html">primaite.simulator.system.services.dns</a><input class="toctree-checkbox" id="toctree-checkbox-137" name="toctree-checkbox-137" role="switch" type="checkbox"/><label for="toctree-checkbox-137"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.dns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.dns.dns_client.html">primaite.simulator.system.services.dns.dns_client</a><input class="toctree-checkbox" id="toctree-checkbox-138" name="toctree-checkbox-138" role="switch" type="checkbox"/><label for="toctree-checkbox-138"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.dns.dns_client</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.dns.dns_client.DNSClient.html">primaite.simulator.system.services.dns.dns_client.DNSClient</a></li>
+</ul>
+</li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.dns.dns_server.html">primaite.simulator.system.services.dns.dns_server</a><input class="toctree-checkbox" id="toctree-checkbox-139" name="toctree-checkbox-139" role="switch" type="checkbox"/><label for="toctree-checkbox-139"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.dns.dns_server</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.dns.dns_server.DNSServer.html">primaite.simulator.system.services.dns.dns_server.DNSServer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ftp.html">primaite.simulator.system.services.ftp</a><input class="toctree-checkbox" id="toctree-checkbox-140" name="toctree-checkbox-140" role="switch" type="checkbox"/><label for="toctree-checkbox-140"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.ftp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ftp.ftp_client.html">primaite.simulator.system.services.ftp.ftp_client</a><input class="toctree-checkbox" id="toctree-checkbox-141" name="toctree-checkbox-141" role="switch" type="checkbox"/><label for="toctree-checkbox-141"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.ftp.ftp_client</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ftp.ftp_client.FTPClient.html">primaite.simulator.system.services.ftp.ftp_client.FTPClient</a></li>
+</ul>
+</li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ftp.ftp_server.html">primaite.simulator.system.services.ftp.ftp_server</a><input class="toctree-checkbox" id="toctree-checkbox-142" name="toctree-checkbox-142" role="switch" type="checkbox"/><label for="toctree-checkbox-142"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.ftp.ftp_server</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ftp.ftp_server.FTPServer.html">primaite.simulator.system.services.ftp.ftp_server.FTPServer</a></li>
+</ul>
+</li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ftp.ftp_service.html">primaite.simulator.system.services.ftp.ftp_service</a><input class="toctree-checkbox" id="toctree-checkbox-143" name="toctree-checkbox-143" role="switch" type="checkbox"/><label for="toctree-checkbox-143"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.ftp.ftp_service</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ftp.ftp_service.FTPServiceABC.html">primaite.simulator.system.services.ftp.ftp_service.FTPServiceABC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.icmp.html">primaite.simulator.system.services.icmp</a><input class="toctree-checkbox" id="toctree-checkbox-144" name="toctree-checkbox-144" role="switch" type="checkbox"/><label for="toctree-checkbox-144"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.icmp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.icmp.icmp.html">primaite.simulator.system.services.icmp.icmp</a><input class="toctree-checkbox" id="toctree-checkbox-145" name="toctree-checkbox-145" role="switch" type="checkbox"/><label for="toctree-checkbox-145"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.icmp.icmp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.icmp.icmp.ICMP.html">primaite.simulator.system.services.icmp.icmp.ICMP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ntp.html">primaite.simulator.system.services.ntp</a><input class="toctree-checkbox" id="toctree-checkbox-146" name="toctree-checkbox-146" role="switch" type="checkbox"/><label for="toctree-checkbox-146"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.ntp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ntp.ntp_client.html">primaite.simulator.system.services.ntp.ntp_client</a><input class="toctree-checkbox" id="toctree-checkbox-147" name="toctree-checkbox-147" role="switch" type="checkbox"/><label for="toctree-checkbox-147"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.ntp.ntp_client</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ntp.ntp_client.NTPClient.html">primaite.simulator.system.services.ntp.ntp_client.NTPClient</a></li>
+</ul>
+</li>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ntp.ntp_server.html">primaite.simulator.system.services.ntp.ntp_server</a><input class="toctree-checkbox" id="toctree-checkbox-148" name="toctree-checkbox-148" role="switch" type="checkbox"/><label for="toctree-checkbox-148"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.ntp.ntp_server</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.ntp.ntp_server.NTPServer.html">primaite.simulator.system.services.ntp.ntp_server.NTPServer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.service.html">primaite.simulator.system.services.service</a><input class="toctree-checkbox" id="toctree-checkbox-149" name="toctree-checkbox-149" role="switch" type="checkbox"/><label for="toctree-checkbox-149"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.service</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.service.Service.html">primaite.simulator.system.services.service.Service</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.service.ServiceOperatingState.html">primaite.simulator.system.services.service.ServiceOperatingState</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.terminal.html">primaite.simulator.system.services.terminal</a><input class="toctree-checkbox" id="toctree-checkbox-150" name="toctree-checkbox-150" role="switch" type="checkbox"/><label for="toctree-checkbox-150"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.terminal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.terminal.terminal.html">primaite.simulator.system.services.terminal.terminal</a><input class="toctree-checkbox" id="toctree-checkbox-151" name="toctree-checkbox-151" role="switch" type="checkbox"/><label for="toctree-checkbox-151"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.terminal.terminal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.terminal.terminal.LocalTerminalConnection.html">primaite.simulator.system.services.terminal.terminal.LocalTerminalConnection</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.terminal.terminal.RemoteTerminalConnection.html">primaite.simulator.system.services.terminal.terminal.RemoteTerminalConnection</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.terminal.terminal.Terminal.html">primaite.simulator.system.services.terminal.terminal.Terminal</a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.terminal.terminal.TerminalClientConnection.html">primaite.simulator.system.services.terminal.terminal.TerminalClientConnection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.web_server.html">primaite.simulator.system.services.web_server</a><input class="toctree-checkbox" id="toctree-checkbox-152" name="toctree-checkbox-152" role="switch" type="checkbox"/><label for="toctree-checkbox-152"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.web_server</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.web_server.web_server.html">primaite.simulator.system.services.web_server.web_server</a><input class="toctree-checkbox" id="toctree-checkbox-153" name="toctree-checkbox-153" role="switch" type="checkbox"/><label for="toctree-checkbox-153"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.services.web_server.web_server</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.services.web_server.web_server.WebServer.html">primaite.simulator.system.services.web_server.web_server.WebServer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.software.html">primaite.simulator.system.software</a><input class="toctree-checkbox" id="toctree-checkbox-154" name="toctree-checkbox-154" role="switch" type="checkbox"/><label for="toctree-checkbox-154"><div class="visually-hidden">Toggle navigation of primaite.simulator.system.software</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.software.IOSoftware.html">primaite.simulator.system.software.IOSoftware</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.software.Software.html">primaite.simulator.system.software.Software</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.software.SoftwareCriticality.html">primaite.simulator.system.software.SoftwareCriticality</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.software.SoftwareHealthState.html">primaite.simulator.system.software.SoftwareHealthState</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.simulator.system.software.SoftwareType.html">primaite.simulator.system.software.SoftwareType</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.html">primaite.utils</a><input class="toctree-checkbox" id="toctree-checkbox-155" name="toctree-checkbox-155" role="switch" type="checkbox"/><label for="toctree-checkbox-155"><div class="visually-hidden">Toggle navigation of primaite.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.html">primaite.utils.cli</a><input class="toctree-checkbox" id="toctree-checkbox-156" name="toctree-checkbox-156" role="switch" type="checkbox"/><label for="toctree-checkbox-156"><div class="visually-hidden">Toggle navigation of primaite.utils.cli</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.dev_cli.html">primaite.utils.cli.dev_cli</a><input class="toctree-checkbox" id="toctree-checkbox-157" name="toctree-checkbox-157" role="switch" type="checkbox"/><label for="toctree-checkbox-157"><div class="visually-hidden">Toggle navigation of primaite.utils.cli.dev_cli</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.dev_cli.config_callback.html">primaite.utils.cli.dev_cli.config_callback</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.dev_cli.dev_mode.html">primaite.utils.cli.dev_cli.dev_mode</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.dev_cli.disable.html">primaite.utils.cli.dev_cli.disable</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.dev_cli.enable.html">primaite.utils.cli.dev_cli.enable</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.dev_cli.path.html">primaite.utils.cli.dev_cli.path</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.dev_cli.show.html">primaite.utils.cli.dev_cli.show</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.primaite_config_utils.html">primaite.utils.cli.primaite_config_utils</a><input class="toctree-checkbox" id="toctree-checkbox-158" name="toctree-checkbox-158" role="switch" type="checkbox"/><label for="toctree-checkbox-158"><div class="visually-hidden">Toggle navigation of primaite.utils.cli.primaite_config_utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.primaite_config_utils.is_dev_mode.html">primaite.utils.cli.primaite_config_utils.is_dev_mode</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.cli.primaite_config_utils.update_primaite_application_config.html">primaite.utils.cli.primaite_config_utils.update_primaite_application_config</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.converters.html">primaite.utils.converters</a><input class="toctree-checkbox" id="toctree-checkbox-159" name="toctree-checkbox-159" role="switch" type="checkbox"/><label for="toctree-checkbox-159"><div class="visually-hidden">Toggle navigation of primaite.utils.converters</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.utils.converters.convert_dict_enum_keys_to_enum_values.html">primaite.utils.converters.convert_dict_enum_keys_to_enum_values</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.package_data.html">primaite.utils.package_data</a><input class="toctree-checkbox" id="toctree-checkbox-160" name="toctree-checkbox-160" role="switch" type="checkbox"/><label for="toctree-checkbox-160"><div class="visually-hidden">Toggle navigation of primaite.utils.package_data</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/primaite.utils.package_data.get_file_path.html">primaite.utils.package_data.get_file_path</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.html">primaite.utils.validation</a><input class="toctree-checkbox" id="toctree-checkbox-161" name="toctree-checkbox-161" role="switch" type="checkbox"/><label for="toctree-checkbox-161"><div class="visually-hidden">Toggle navigation of primaite.utils.validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ip_protocol.html">primaite.utils.validation.ip_protocol</a><input class="toctree-checkbox" id="toctree-checkbox-162" name="toctree-checkbox-162" role="switch" type="checkbox"/><label for="toctree-checkbox-162"><div class="visually-hidden">Toggle navigation of primaite.utils.validation.ip_protocol</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ip_protocol.PROTOCOL_LOOKUP.html">primaite.utils.validation.ip_protocol.PROTOCOL_LOOKUP</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ip_protocol.VALID_PROTOCOLS.html">primaite.utils.validation.ip_protocol.VALID_PROTOCOLS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ip_protocol.IPProtocol.html">primaite.utils.validation.ip_protocol.IPProtocol</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ip_protocol.is_valid_protocol.html">primaite.utils.validation.ip_protocol.is_valid_protocol</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ip_protocol.protocol_validator.html">primaite.utils.validation.ip_protocol.protocol_validator</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ipv4_address.html">primaite.utils.validation.ipv4_address</a><input class="toctree-checkbox" id="toctree-checkbox-163" name="toctree-checkbox-163" role="switch" type="checkbox"/><label for="toctree-checkbox-163"><div class="visually-hidden">Toggle navigation of primaite.utils.validation.ipv4_address</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ipv4_address.IPV4Address.html">primaite.utils.validation.ipv4_address.IPV4Address</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ipv4_address.ipv4_validator.html">primaite.utils.validation.ipv4_address.ipv4_validator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.ipv4_address.str_ip.html">primaite.utils.validation.ipv4_address.str_ip</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.port.html">primaite.utils.validation.port</a><input class="toctree-checkbox" id="toctree-checkbox-164" name="toctree-checkbox-164" role="switch" type="checkbox"/><label for="toctree-checkbox-164"><div class="visually-hidden">Toggle navigation of primaite.utils.validation.port</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.port.PORT_LOOKUP.html">primaite.utils.validation.port.PORT_LOOKUP</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.port.Port.html">primaite.utils.validation.port.Port</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.port.is_valid_port.html">primaite.utils.validation.port.is_valid_port</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/primaite.utils.validation.port.port_validator.html">primaite.utils.validation.port.port_validator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <style>
+    .stderr {
+        color: #000 !important
+    }
+</style><section id="Training-an-Agent-on-UC7">
+<h1>Training an Agent on UC7<a class="headerlink" href="#Training-an-Agent-on-UC7" title="Permalink to this heading">#</a></h1>
+<p>© Crown-owned copyright 2025, Defence Science and Technology Laboratory UK</p>
+<p>This notebook is identical in content to the <a class="reference internal" href="Training-an-SB3-Agent.html"><span class="doc">training an SB3 agent</span></a> except this notebook trains an agent on the <a class="reference internal" href="UC7-E2E-Demo.html"><span class="doc">use case 7 scenario</span></a> rather than <a class="reference internal" href="Data-Manipulation-E2E-Demonstration.html"><span class="doc">use case 2</span></a>. By default, the <code class="docutils literal notranslate"><span class="pre">uc7_config.yaml</span></code> blue agent (<code class="docutils literal notranslate"><span class="pre">defender</span></code>) is setup to defend against Threat Actor Profile (TAP) 001 which can be explored in more detail <a class="reference internal" href="UC7-TAP001-Kill-Chain-E2E.html"><span class="doc">here</span></a>.</p>
+<section id="First,-we-import-the-inital-packages-and-read-in-our-configuration-file.">
+<h2>First, we import the inital packages and read in our configuration file.<a class="headerlink" href="#First,-we-import-the-inital-packages-and-read-in-our-configuration-file." title="Permalink to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>primaite<span class="w"> </span>setup
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2025-03-24 09:57:44,637: Performing the PrimAITE first-time setup...
+2025-03-24 09:57:44,637: Building the PrimAITE app directories...
+2025-03-24 09:57:44,637: Building primaite_config.yaml...
+2025-03-24 09:57:44,638: Rebuilding the demo notebooks...
+2025-03-24 09:57:44,660: Rebuilding the example notebooks...
+2025-03-24 09:57:44,662: PrimAITE setup complete!
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">primaite.session.environment</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrimaiteGymEnv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">primaite</span><span class="w"> </span><span class="kn">import</span> <span class="n">PRIMAITE_PATHS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prettytable</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrettyTable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deepdiff.diff</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeepDiff</span>
+<span class="n">scenario_path</span> <span class="o">=</span> <span class="n">PRIMAITE_PATHS</span><span class="o">.</span><span class="n">user_config_path</span> <span class="o">/</span> <span class="s2">&quot;example_config/uc7_config.yaml&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gym</span> <span class="o">=</span> <span class="n">PrimaiteGymEnv</span><span class="p">(</span><span class="n">env_config</span><span class="o">=</span><span class="n">scenario_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-03-24 09:57:48,900: PrimaiteGymEnv RNG seed = None
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">stable_baselines3</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPO</span>
+
+<span class="c1"># EPISODE_LEN = 128</span>
+<span class="n">EPISODE_LEN</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">NUM_EPISODES</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">NO_STEPS</span> <span class="o">=</span> <span class="n">EPISODE_LEN</span> <span class="o">*</span> <span class="n">NUM_EPISODES</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">3e-4</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1742810269.217227    9203 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1742810269.221691    9203 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+W0000 00:00:1742810269.233774    9203 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1742810269.233786    9203 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1742810269.233788    9203 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1742810269.233789    9203 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">gym</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="n">LEARNING_RATE</span><span class="p">,</span>  <span class="n">n_steps</span><span class="o">=</span><span class="n">NO_STEPS</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="s2">&quot;./PPO_UC7/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="n">NO_STEPS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-03-24 09:57:52,384: Resetting environment, episode 0, avg. reward: 0.0
+2025-03-24 09:58:05,306: Resetting environment, episode 1, avg. reward: 120.30312499999992
+2025-03-24 09:58:14,320: Resetting environment, episode 2, avg. reward: 120.14375000000013
+2025-03-24 09:58:27,043: Resetting environment, episode 3, avg. reward: 121.4515624999999
+2025-03-24 09:58:36,466: Resetting environment, episode 4, avg. reward: 132.703125
+2025-03-24 09:58:49,621: Resetting environment, episode 5, avg. reward: 130.85625000000016
+2025-03-24 09:58:58,545: Resetting environment, episode 6, avg. reward: 123.87812500000005
+2025-03-24 09:59:07,254: Resetting environment, episode 7, avg. reward: 124.36250000000038
+2025-03-24 09:59:16,760: Resetting environment, episode 8, avg. reward: 140.02500000000006
+2025-03-24 09:59:29,817: Resetting environment, episode 9, avg. reward: 127.27187499999992
+2025-03-24 09:59:42,874: Resetting environment, episode 10, avg. reward: 122.03124999999993
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;stable_baselines3.ppo.ppo.PPO at 0x7f94e9134280&gt;
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;PrimAITE-PPO-UC7-example-agent&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_model</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="s2">&quot;MlpPolicy&quot;</span><span class="p">,</span> <span class="n">gym</span><span class="p">)</span>
+<span class="n">eval_model</span> <span class="o">=</span> <span class="n">PPO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;PrimAITE-PPO-UC7-example-agent&quot;</span><span class="p">,</span> <span class="n">gym</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">stable_baselines3.common.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate_policy</span>
+
+<span class="n">evaluate_policy</span><span class="p">(</span><span class="n">eval_model</span><span class="p">,</span> <span class="n">gym</span><span class="p">,</span> <span class="n">n_eval_episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/stable_baselines3/common/evaluation.py:67: UserWarning: Evaluation environment is not wrapped with a ``Monitor`` wrapper. This may result in reporting modified episode lengths and rewards, if other wrappers happen to modify these. Consider wrapping environment first with ``Monitor`` wrapper.
+  warnings.warn(
+2025-03-24 09:59:44,792: Resetting environment, episode 11, avg. reward: 0.0
+2025-03-24 09:59:54,727: Resetting environment, episode 12, avg. reward: 140.51406249999997
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(140.51406466960907, 0.0)
+</pre></div></div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="UC7-attack-variants.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">UC7 with Attack Variability</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="UC7-TAP003-Kill-Chain-E2E.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">TAP003 - Malicious Insider Kill Chain</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Copyright (C) Defence Science and Technology Laboratory UK 2021 - 2025
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Training an Agent on UC7</a><ul>
+<li><a class="reference internal" href="#First,-we-import-the-inital-packages-and-read-in-our-configuration-file.">First, we import the inital packages and read in our configuration file.</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=56d04a72"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
